@@ -8,10 +8,10 @@ Nodejs middleware handle requests *entirely* with side effects. Consider the fol
 ```js
 function updateProfile(req, res, next) {
   // Check for name.
-  if (!req.query.username) next(new Error('Must define username.'))
+  if (!req.query.userId) next(new Error('Must define username.'))
 
   // Query the db.
-  db.updateUsername(req.query.username)
+  db.updateNickname(req.query.userId, req.query.nickname)
     .then(() => next())
     .catch(next)
 }
@@ -22,10 +22,10 @@ REQRELAY let's you replace that with purer functions that throw or return (and n
 ```js
 function updateProfile(req, res) {
   // Check for name.
-  if (!req.query.username) throw new Error('Must define username.')
+  if (!req.query.userId) throw new Error('Must define username.')
 
   // Query the db.
-  return db.updateUsername(req.query.username)
+  return db.updateNickname(req.query.userId, req.query.nickname)
 }
 ```
 
