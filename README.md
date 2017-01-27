@@ -61,7 +61,22 @@ REQRELAY.onError = function (err, res) {
 }
 ```
 
-## Use it with ExpressJS
+## Use it with plain nodejs.
+```js
+const http = require('http')
+const myHandler1 = require('./...')
+const myHandler2 = require('./...')
+
+http.createServer((req, res) => {
+  REQRELAY(
+    myHandler1,
+    myHandler2
+  )
+})
+
+```
+
+## Use it with ExpressJS.
 You can use REQRELAY with ExpressJS to take advantage of everything the community offers, while writing your own handlers in a more rarefied way. For example:
 
 ```js
