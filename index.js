@@ -1,20 +1,35 @@
 'use strict'
 
-let pws = [], onError = (e, rs) => {
-  rs.statusCode = e.status || 500
-  rs.end(e.stack)
+// Use err.status, grab from the message, or default to 500.
+function getStatus(err) {
+  if (!(err instanceof Error)) return 500
+  if (err.status) return err.status
+  const inMsg = err.message.split(':').shift() || ''
+  return inMsg.match(/\d{3}/) ? parseInt(inMsg, 10) : 500
 }
 
-function relay(rq, rs) {
-  let pw = null
-  const wrap = f => Promise.resolve().then(_=> f(rq, rs))
-  const then = _=> f => pw = pw ? pw.then(_=> rs.headersSent ? wrap(_=>{}) : wrap(f)) : wrap(f)
-  return pws.map(then()).pop().catch(e => onError(e, rs))
+// Send stack only if client is localhost.
+function getStack(rq, err) {
+  if (!(err instanceof Error)) return 'Unknown Error'
+  return rq.connection.remoteAddress === '::1' ? err.stack : err.msg
 }
 
-relay.onError = f => onError = f
+const handleErr = (rq, rs, err) => (rs.statusCode = getStatus(err), rs.end(getStack(rq, err)))
 
-module.exports = (...funcs) => {
-  pws = funcs
-  return relay
+module.exports = function(...handlers) {
+  return function (uri) {
+    function REQRELAY(rq, rs, next) {
+      if (typeof uri === 'string' && rq.url.indexOf(uri)) return !!next && next()
+      let handler = null
+      const wrap = f => Promise.resolve().then(_=> f(rq, rs))
+      const then = _=> (
+        f => handler = handler ? handler.then(_=> rs.headersSent ? wrap(_=>{}) : wrap(f)) : wrap(f)
+      )
+      return handlers.map(then()).pop().catch(err => onError(rq, rs, err))
+    }
+
+    let onError = handleErr
+    REQRELAY.onError = f => onError = f
+    return typeof uri === 'object' ? REQRELAY(...arguments) : REQRELAY
+  }
 }
