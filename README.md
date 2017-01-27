@@ -45,7 +45,7 @@ REQRELAY(
 
 Each handler is of the form:
 
-```
+```js
 function(req, res) {
   // do whatever to req and res
   return aPromiseOrOtherValue
