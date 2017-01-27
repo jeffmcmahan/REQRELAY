@@ -64,6 +64,7 @@ REQRELAY.onError = function (err, res) {
 ## Use it with plain nodejs.
 ```js
 const http = require('http')
+const REQRELAY = require('req.relay')
 const myHandler1 = require('./...')
 const myHandler2 = require('./...')
 
