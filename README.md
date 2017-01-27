@@ -69,7 +69,7 @@ const myHandler1 = require('./...')
 const myHandler2 = require('./...')
 
 const relay = REQRELAY(myHandler1, myHandler2)
-http.createServer(relay)
+http.createServer(relay).listen(3000)
 ```
 
 ## Use it with ExpressJS.
@@ -89,4 +89,5 @@ app.use(compression)
 // return-throw-friendly handlers:
 const relay = REQRELAY(myHandler1, myHandler2)
 app.use(relay)
+app.listen(3000)
 ```
