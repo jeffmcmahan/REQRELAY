@@ -6,12 +6,13 @@ $ npm install req.relay
 Nodejs middleware handle requests *entirely* with side effects. Consider the following:
 
 ```js
-function queryDb(req, res, next) {
+function updateProfile(req, res, next) {
   // Check for name.
   if (!req.query.username) next(new Error('Must define username.'))
+
   // Query the db.
-  db.getByUsername(req.query.username)
-    .then(next)
+  db.updateUsername(req.query.username)
+    .then(() => next())
     .catch(next)
 }
 ```
@@ -19,11 +20,12 @@ function queryDb(req, res, next) {
 REQRELAY let's you replace that with purer functions that throw or return (and never work by side effects alone):
 
 ```js
-function queryDb(req, res) {
+function updateProfile(req, res) {
   // Check for name.
-  if (!req.query || !req.query.username) throw new Error('Must define username.')
+  if (!req.query.username) throw new Error('Must define username.')
+
   // Query the db.
-  return db.getByUsername(req.query.username)
+  return db.updateUsername(req.query.username)
 }
 ```
 
