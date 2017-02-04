@@ -17,7 +17,7 @@ function myHandler(req, res) {
 REQRELAY(myHandler, handler2, handlerN)
 ```
 
-`myHandler` simply throws when it encounters an error&#8212;there is no `next()`. REQRELAY will catch the error and pass it to it's default error handler, or to an error handler you've defined. No more node server crashes means no more managing clusters.
+`myHandler` simply throws when it encounters an error&#8212;there is no `next()`. REQRELAY will catch the error and pass it to its default error handler, or to an error handler you've defined. No more node server crashes means no more managing clusters.
 
 ## Simple, Flexible API
 Pass handler functions to `REQRELAY` as a list:
