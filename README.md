@@ -26,7 +26,7 @@ Pass handler functions to `REQRELAY` as a list:
 REQRELAY(handler1, handler2, handlerN)
 ```
 
-Optionally specify a URI path condition: 
+Optionally specify a URI path condition:
 
 ```js
 REQRELAY(handler1, handler2, handlerN)('/some-path/')
@@ -36,7 +36,7 @@ Each handler is of the form:
 
 ```js
 function(req, res) {
-  // You may: 
+  // You may:
   // - throw an error
   // - return an ordinary value
   // - return a promise
@@ -47,11 +47,11 @@ When the handler has finished work (sync or async), if `res.headersSent` is fals
 
 ### Error Handling
 
-If there is an uncaught error, REQRELAY will catch it and pass it to the global error handler. Customize the error handler as follows:
+If there is an uncaught error, REQRELAY will catch it and pass it to it's error catch handler. You can customize each relay's error handler as follows:
 
 ```js
-REQRELAY.onError = function (err, res) {
-  res.end('...')
+REQRELAY.onError = function (req, res, err) {
+  res.end('Error!')
 }
 ```
 
