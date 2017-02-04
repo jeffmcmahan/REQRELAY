@@ -47,7 +47,7 @@ When the handler has finished work (sync or async), if `res.headersSent` is fals
 
 ### Error Handling
 
-If there is an uncaught error, REQRELAY will catch it and pass it to it's error catch handler. You can customize each relay's error handler as follows:
+If there is an uncaught error, REQRELAY will catch it and pass it to its error catch handler. You can customize each relay's error handler as follows:
 
 ```js
 REQRELAY.onError = function (req, res, err) {
