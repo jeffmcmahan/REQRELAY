@@ -42,6 +42,15 @@ function(req, res) {
   // - return a promise
   // - implicitly return undefined
 }
+
+// OR
+
+async function(req, res) {
+  // You may:
+  // - throw an error
+  // - return a value
+  // - implicitly return undefined
+}
 ```
 When the handler has finished work (sync or async), if `res.headersSent` is false, the next function runs, and so on until the headers are sent, or there are no handler functions left.
 
