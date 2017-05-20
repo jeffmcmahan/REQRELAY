@@ -8,7 +8,7 @@ handler behavior, and the nestability of relays.
 
 'use strict'
 
-const REQRELAY = require('../')
+const REQRELAY = require('.')
 const assert = require('assert')
 
 function noop(){}
@@ -21,7 +21,7 @@ function noop(){}
  * @return {undefined}
  */
 function doSomethingHandler (req, res) {
-  res.headerSent = true
+  res.headersSent = true
 }
 
 /**
