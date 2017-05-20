@@ -9,10 +9,10 @@
 module.exports = (onErr, ...handlers) => async (rq, rs) => {
   try {
     for (let handler of handlers) {
-      if (!rs.headerSent) await handler(rq, rs)
+      if (!rs.headersSent) await handler(rq, rs)
       else break
     }
   } catch (e) {
-    onErr(rq, rs, e)
+    await onErr(rq, rs, e)
   }
 }
